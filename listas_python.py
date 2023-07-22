@@ -75,5 +75,3 @@ print(quadrado)
 
 quadrado = [numero**2 for numero in numeros] #modificando elementos de forma comprimida
 print(quadrado)
-
-
