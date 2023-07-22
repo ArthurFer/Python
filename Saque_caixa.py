@@ -9,8 +9,7 @@ def sacar (valor):
 
 
 print("Caixa Eletronico\n\n")
-saque = input("Informe o valor que deseja sacar: ")
-saque = float(saque)
+saque = float(input("Informe o valor que deseja sacar: "))
 sacar(saque)
 
 
