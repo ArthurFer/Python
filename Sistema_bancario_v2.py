@@ -1,7 +1,12 @@
-#Sistema bancário v2
-#Desenvolvedor: Arthur Fernando
+# Sistema bancário v2
+# Refatoração do Sistema bancário v1 para um modelo funcional, Este código é um sistema bancário mais complexo com suporte para múltiplos usuários e contas. 
+# Ele permite a criação de usuários, a criação de contas associadas a usuários, a realização de depósitos, saques e exibição de extratos. 
+# Desenvolvedor: Arthur Fernando
+
+# Importa o módulo 'textwrap' para formatar a exibição de informações de conta
 import textwrap
 
+# Define uma função 'depositar' que lida com operações de depósito
 def depositar(saldo, valor_deposito, extrato, /):
     if valor_deposito > 0:
         saldo += valor_deposito
@@ -10,31 +15,33 @@ def depositar(saldo, valor_deposito, extrato, /):
         print("O valor informado é inválido, somente valores positivos são permitidos")
     return (saldo, extrato)
 
-
-def saque(*,saldo, valor_saque, extrato, limite, numero_saques, limite_saques):
+# Define uma função 'saque' que lida com operações de saque
+def saque(*, saldo, valor_saque, extrato, limite, numero_saques, limite_saques):
     if (numero_saques < limite_saques):
-            if valor_saque > 0:
-                if (valor_saque <= limite) and (valor_saque <= saldo):
-                    saldo = saldo - valor_saque
-                    print("Saque realizado com sucesso.")
-                    numero_saques += 1
-                    extrato += f"Saque: -R$ {valor_saque: .2f}\n"
-                elif (valor_saque > limite):
-                    print ("Limite por saque R$ 500.00")
-                else:
-                    print ("Saldo insuficiente para realização de saque.")   
+        if valor_saque > 0:
+            if (valor_saque <= limite) and (valor_saque <= saldo):
+                saldo = saldo - valor_saque
+                print("Saque realizado com sucesso.")
+                numero_saques += 1
+                extrato += f"Saque: -R$ {valor_saque: .2f}\n"
+            elif (valor_saque > limite):
+                print ("Limite por saque R$ 500.00")
             else:
-                print("Somente valores positivos são aceitos.") 
+                print ("Saldo insuficiente para realização de saque.")
+        else:
+            print("Somente valores positivos são aceitos.")
     else:
         print ("\n\n LIMITE DIARIO DE SAQUE EXCEDIDO \n\n")
     return (saldo, extrato)
 
+# Define uma função 'exibir_extrato' para mostrar as informações do extrato da conta
 def exibir_extrato(saldo, /, *, extrato):
     print("\n------------------ Extrato ------------------")
     print("Não foram realizadas movimentações." if not extrato else extrato)
     print(f"Saldo: R$ {saldo: .2f}")
     print("---------------------------------------------")
 
+# Define uma função 'criar_usuario' que permite criar um novo usuário
 def criar_usuario(usuarios):
     cpf = input("Informe o CPF (somente número): ")
     usuario = filtrar_usuario(cpf, usuarios)
@@ -51,12 +58,12 @@ def criar_usuario(usuarios):
 
     print("=== Usuário criado com sucesso! ===")
 
-
+# Define uma função 'filtrar_usuario' que busca um usuário por CPF
 def filtrar_usuario(cpf, usuarios):
     usuarios_filtrados = [usuario for usuario in usuarios if usuario["cpf"] == cpf]
     return usuarios_filtrados[0] if usuarios_filtrados else None
 
-
+# Define uma função 'criar_conta' que permite criar uma nova conta associada a um usuário
 def criar_conta(agencia, numero_conta, usuarios):
     cpf = input("Informe o CPF do usuário: ")
     usuario = filtrar_usuario(cpf, usuarios)
@@ -67,7 +74,7 @@ def criar_conta(agencia, numero_conta, usuarios):
 
     print("\n Usuário não encontrado, fluxo de criação de conta encerrado!")
 
-
+# Define uma função 'listar_contas' que exibe informações de todas as contas
 def listar_contas(contas):
     for conta in contas:
         linha = f"""\
@@ -78,7 +85,9 @@ def listar_contas(contas):
         print("=" * 100)
         print(textwrap.dedent(linha))
 
+# Função principal do programa
 def main():
+    # Menu de opções para o usuário
     menu = """
     [d] \tDepositar
     [s] \tSacar
@@ -92,6 +101,7 @@ def main():
     ->
     """
 
+    # Variáveis e constantes
     AGENCIA = "0001"
     saldo = 0
     limite = 500
@@ -100,23 +110,23 @@ def main():
     LIMITE_SAQUES = 3
     valor_saque = 0
     valor_deposito = 0
-    usuarios = []
-    contas = []
+    usuarios = []  # Armazena informações de usuários
+    contas = []    # Armazena informações de contas
 
     while True:
-
+        # Solicita ao usuário que escolha uma opção do menu
         opcao = input(menu)
 
         if opcao == "d":
             print("Depósito")
             valor_deposito =  float(input("Insira valor a ser depositado: "))
-            saldo, extrato = depositar(saldo, valor_deposito,extrato)
-        
+            saldo, extrato = depositar(saldo, valor_deposito, extrato)
+
         elif opcao == "s":
             print("Sacar")
-            valor_saque = float(input("Informe o valor que deseja sacar: "))        
+            valor_saque = float(input("Informe o valor que deseja sacar: "))
             saldo, extrato = saque(saldo = saldo, valor_saque= valor_saque, extrato= extrato, limite= limite, numero_saques= numero_saques, limite_saques= LIMITE_SAQUES )
-            numero_saques += 1       
+            numero_saques += 1
 
         elif opcao == "e":
             exibir_extrato(saldo, extrato= extrato)
@@ -139,4 +149,5 @@ def main():
         else:
             print("Operação inválida, por favor selecione novamente a operação desejada.")
 
+# Chama a função principal para iniciar o programa
 main()

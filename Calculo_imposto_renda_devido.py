@@ -10,23 +10,28 @@
 #  De 3.751,07 até 4.664,68     22,5%           651,73
 #  Acima de 4.664,68            27,5%           884,96
 
+# Definição dos intervalos de bases salariais
 base_salario_faixa1 = (2112.01, 2826.66)
 base_salario_faixa2 = (2826.67, 3751.06)
 base_salario_faixa3 = (3751.07, 4664.68)
 base_salario_faixa4 = 4664.68
 
+# Definição das alíquotas de imposto para cada faixa
 aliquota_faixa1 = (7.50/100)
 aliquota_faixa2 = (15.0/100)
 aliquota_faixa3 = (22.5/100)
 aliquota_faixa4 = (27.5/100)
 
+# Definição das deduções de imposto para cada faixa
 deducao_faixa1 = 158.40
 deducao_faixa2 = 370.40
 deducao_faixa3 = 651.73
 deducao_faixa4 = 884.96
 
+# Variável para controlar a instrução de parada
 instrucao_parada = True
 
+# Loop para solicitar o salário base e calcular o imposto de renda
 while instrucao_parada:
     try:
         salario_base = float(input("Digite o salario base: "))
